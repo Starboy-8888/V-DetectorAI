@@ -96,6 +96,19 @@
 	</style>
 </head>
 <body>
+	<script type="text/javascript">
+  (function(d, t) {
+      var v = d.createElement(t), s = d.getElementsByTagName(t)[0];
+      v.onload = function() {
+        window.voiceflow.chat.load({
+          verify: { projectID: '670fa4efa6be7068d2801796' },
+          url: 'https://general-runtime.voiceflow.com',
+          versionID: 'production'
+        });
+      }
+      v.src = "https://cdn.voiceflow.com/widget/bundle.mjs"; v.type = "text/javascript"; s.parentNode.insertBefore(v, s);
+  })(document, 'script');
+</script>
 	<div class="parallax parallax1">
 		<div class="content">
 			<h1 class="text-effect">Welcome to our AI model</h1>
