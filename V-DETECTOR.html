@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>V-DETECTOR</title>
+	<style>
+		body {
+			margin: 0;
+			font-family: Arial, sans-serif;
+		}
+		
+		.parallax {
+			background-attachment: fixed;
+			background-position: center;
+			background-repeat: no-repeat;
+			background-size: cover;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		
+		.parallax1 {
+			background-image: url('9498af3b-39ab-41b3-828d-63022b1f0f0d.jpg');
+			background-color: #f2f2f2; /* Light gray background */
+		}
+		
+		.parallax2 {
+			background-image: url('93bffb23-f0e6-4b2e-8c2e-8d56ddc55014.jpg');
+			background-color: #333; /* Dark gray background */
+		}
+		
+		.parallax3 {
+			background-image: url('b64f3fe4-1763-43f4-8b20-37fc40bb7837.jpg');
+			background-color: #f7f7f7; /* Light gray background */
+		}
+		
+		.content {
+			text-align: center;
+			padding: 20px;
+			animation: fadeInUp 1s ease forwards;
+			opacity: 0; /* Start invisible */
+			transform: translateY(20px); /* Start slightly lower */
+		}
+		.content1 {
+			text-align: center;
+			padding: 20px;
+			animation: fadeInUp 1s ease forwards;
+			opacity: 0; /* Start invisible */
+			transform: translateY(20px); /* Start slightly lower */
+		}
+		
+		@keyframes fadeInUp {
+			to {
+				opacity: 1; /* Fade in */
+				transform: translateY(0); /* Move to original position */
+			}
+		}
+		
+		/* Animation trigger */
+		.parallax1 .content {
+			animation-delay: 0.5s; /* Delay for first section */
+		}
+		
+		.parallax2 .content {
+			animation-delay: 1s; /* Delay for second section */
+		}
+		
+		.parallax3 .content {
+			animation-delay: 1.5s; /* Delay for third section */
+		}
+		
+		/* Text effects */
+		.text-effect {
+			font-size: 42px;
+			font-weight: bold;
+			color: #fff; /* White text */
+			text-shadow: 2px 2px 4px #000; /* Black text shadow */
+		}
+		
+		.text-effect:hover {
+			color: #ccc; /* Light gray text on hover */
+			text-shadow: 2px 2px 4px #666; /* Dark gray text shadow on hover */
+		}
+		.text-effect1 {
+			font-size: 32px;
+			font-weight: bold;
+			color: #fff; /* White text */
+			text-shadow: 2px 2px 4px #000; /* Black text shadow */
+		}
+	</style>
+</head>
+<body>
+	<div class="parallax parallax1">
+		<div class="content">
+			<h1 class="text-effect">Welcome to our AI model</h1>
+			<p class="text-effect1">This is an AI model which basically detect any violent activities.
+This AI takes access of your camera and detects violent activities</p>
+		</div>
+	</div>
+	
+	<div class="parallax parallax2">
+		<div class="content">
+			<h1 class="text-effect">Test out the AI model below</h1>
+			<div>V-DETECTOR image model</div>
+<button type="button" onclick="init()">Start</button>
+<div id="webcam-container"></div>
+<div id="label-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    // More API functions here:
+    // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+    // the link to your model provided by Teachable Machine export panel
+    const URL = "https://teachablemachine.withgoogle.com/models/4D_TqnzTh/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        // append elements to the DOM
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+    }
+	
+</script>
+			
+			<p>*click allow to access camera*</p>
+		</div>
+	</div>
+	
+	<div class="parallax parallax3">
+		<div class="content1">
+			<h1 class="text-effect">AI Model video presentation follows below. Detailed video so sit back and enjoy! </h1>
+			<p class="text-effect1">video link</p>
+		</div>
+	</div>
+</body>
+</html>
